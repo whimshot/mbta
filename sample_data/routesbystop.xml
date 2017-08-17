@@ -1,0 +1,18 @@
+<route_list
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    stop_id="599"
+    stop_name="Washington St @ Mosgrove Ave">
+    <mode route_type="3" mode_name="Bus">
+        <route route_id="30" route_name="30"/>
+        <route route_id="34" route_name="34"/>
+        <route route_id="34E" route_name="34E"/>
+        <route route_id="35" route_name="35"/>
+        <route route_id="36" route_name="36"/>
+        <route route_id="37" route_name="37"/>
+        <route route_id="40" route_name="40"/>
+        <route route_id="4050" route_name="40/50" route_hide="true"/>
+        <route route_id="50" route_name="50"/>
+        <route route_id="51" route_name="51"/>
+    </mode>
+</route_list>

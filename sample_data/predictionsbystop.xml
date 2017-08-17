@@ -1,0 +1,156 @@
+<predictions
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    stop_id="599"
+    stop_name="Washington St @ Mosgrove Ave">
+    <mode route_type="3" mode_name="Bus">
+        <route route_id="30" route_name="30">
+            <direction direction_id="0" direction_name="Outbound">
+                <trip
+                    trip_id="34229440"
+                    trip_name="7:55 pm from Forest Hills Station Upper Busway to Mattapan Station - North Busway"
+                    trip_headsign="Mattapan"
+                    sch_arr_dt="1503014280"
+                    sch_dep_dt="1503014280"
+                    pre_dt="1503014381"
+                    pre_away="1684"/>
+            </direction>
+        </route>
+        <route route_id="34" route_name="34">
+            <direction direction_id="0" direction_name="Outbound">
+                <trip
+                    trip_id="34230165"
+                    trip_name="7:22 pm from Forest Hills Station Upper Busway to 245 Washington St"
+                    trip_headsign="Dedham Line"
+                    sch_arr_dt="1503012360"
+                    sch_dep_dt="1503012360"
+                    pre_dt="1503012772"
+                    pre_away="75">
+                    <vehicle
+                        vehicle_id="y1713"
+                        vehicle_lat="42.3008689880371"
+                        vehicle_lon="-71.1143112182617"
+                        vehicle_bearing="351"
+                        vehicle_speed="0"
+                        vehicle_timestamp="1503012618"
+                        vehicle_label="1713"/>
+                </trip>
+                <trip
+                    trip_id="34230158"
+                    trip_name="7:34 pm from Forest Hills Station Upper Busway to 245 Washington St"
+                    trip_headsign="Dedham Line"
+                    sch_arr_dt="1503013020"
+                    sch_dep_dt="1503013020"
+                    pre_dt="1503013110"
+                    pre_away="413"/>
+                <trip
+                    trip_id="34230168"
+                    trip_name="7:46 pm from Forest Hills Station Upper Busway to 245 Washington St"
+                    trip_headsign="Dedham Line"
+                    sch_arr_dt="1503013740"
+                    sch_dep_dt="1503013740"
+                    pre_dt="1503014024"
+                    pre_away="1327"/>
+                <trip
+                    trip_id="34230502"
+                    trip_name="7:58 pm from Forest Hills Station Upper Busway to 245 Washington St"
+                    trip_headsign="Dedham Line"
+                    sch_arr_dt="1503014460"
+                    sch_dep_dt="1503014460"
+                    pre_dt="1503014468"
+                    pre_away="1771"/>
+            </direction>
+        </route>
+        <route route_id="34E" route_name="34E">
+            <direction direction_id="0" direction_name="Outbound">
+                <trip
+                    trip_id="34230226"
+                    trip_name="8:10 pm from Forest Hills Station Upper Busway to 205 Washington St @ East Walpole Loop"
+                    trip_headsign="East Walpole via Dedham Mall"
+                    sch_arr_dt="1503015180"
+                    sch_dep_dt="1503015180"
+                    pre_dt="1503015210"
+                    pre_away="2513"/>
+            </direction>
+        </route>
+        <route route_id="35" route_name="35">
+            <direction direction_id="0" direction_name="Outbound">
+                <trip
+                    trip_id="34230412"
+                    trip_name="7:45 pm from Forest Hills Station Upper Busway to Dedham Mall @ Stop & Shop"
+                    trip_headsign="Dedham Mall"
+                    sch_arr_dt="1503013680"
+                    sch_dep_dt="1503013680"
+                    pre_dt="1503013852"
+                    pre_away="1155"/>
+            </direction>
+        </route>
+        <route route_id="36" route_name="36">
+            <direction direction_id="0" direction_name="Outbound">
+                <trip
+                    trip_id="34229234"
+                    trip_name="7:30 pm from Forest Hills Station Upper Busway to Charles River Loop"
+                    trip_headsign="Charles River Loop"
+                    sch_arr_dt="1503012780"
+                    sch_dep_dt="1503012780"
+                    pre_dt="1503012821"
+                    pre_away="124">
+                    <vehicle
+                        vehicle_id="y1633"
+                        vehicle_lat="42.3001976013184"
+                        vehicle_lon="-71.1144866943359"
+                        vehicle_bearing="216"
+                        vehicle_speed="0"
+                        vehicle_timestamp="1503012633"
+                        vehicle_label="1633"/>
+                </trip>
+                <trip
+                    trip_id="34229176"
+                    trip_name="8:00 pm from Forest Hills Station Upper Busway to Charles River Loop"
+                    trip_headsign="Charles River Loop"
+                    sch_arr_dt="1503014580"
+                    sch_dep_dt="1503014580"
+                    pre_dt="1503014683"
+                    pre_away="1986"/>
+            </direction>
+        </route>
+        <route route_id="4050" route_name="40/50">
+            <direction direction_id="0" direction_name="Outbound">
+                <trip
+                    trip_id="34231118"
+                    trip_name="8:00 pm from Forest Hills Station Upper Busway to River St @ Hyde Park Ave"
+                    trip_headsign="Cleary Square"
+                    sch_arr_dt="1503014580"
+                    sch_dep_dt="1503014580"
+                    pre_dt="1503014788"
+                    pre_away="2091"/>
+            </direction>
+        </route>
+        <route route_id="51" route_name="51">
+            <direction direction_id="0" direction_name="Outbound">
+                <trip
+                    trip_id="34230009"
+                    trip_name="7:30 pm from Forest Hills Station Upper Busway to Chestnut Hill Ave @ Reservoir Busway"
+                    trip_headsign="Reservoir"
+                    sch_arr_dt="1503012780"
+                    sch_dep_dt="1503012780"
+                    pre_dt="1503013251"
+                    pre_away="554"/>
+                <trip
+                    trip_id="34230057"
+                    trip_name="8:30 pm from Forest Hills Station Upper Busway to Chestnut Hill Ave @ Reservoir Busway"
+                    trip_headsign="Reservoir"
+                    sch_arr_dt="1503016380"
+                    sch_dep_dt="1503016380"
+                    pre_dt="1503016445"
+                    pre_away="3748"/>
+            </direction>
+        </route>
+    </mode>
+    <alert_headers>
+        <alert
+            alert_id="198093"
+            header_text="Route 37 experiencing minor delays due to traffic"
+            effect_name="Delay"/>
+    </alert_headers>
+</predictions>

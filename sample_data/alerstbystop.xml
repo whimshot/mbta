@@ -1,0 +1,123 @@
+<alerts
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    stop_id="place-portr"
+    stop_name="Porter">
+    <alert alert_id="197989">
+        <effect_name>Suspension</effect_name>
+        <effect>NO_SERVICE</effect>
+        <cause_name>construction</cause_name>
+        <cause>CONSTRUCTION</cause>
+        <header_text>
+            Fitchburg Line service will be suspended between Porter Square & North Station
+            this Saturday, August 19th, until approximately 6 pm. Subway connections
+            provided at Porter Square & North Station.
+        </header_text>
+        <short_header_text>
+            Fitchburg Line service will be suspended between Porter Sq & N Station this
+            Sat, Aug 19th, until 6 pm
+        </short_header_text>
+        <description_text>
+            Due to Green Line Extension construction in Somerville, Fitchburg line service
+            will be suspended between Porter Square and North Station in both directions
+            on the following date: - Saturday, August 19th, 2017 Inbound Fitchburg Line
+            service will terminate at Porter Square where passengers can connect with the
+            Red Line for service to Boston. Passengers desiring outbound Fitchburg Line
+            service from Boston must take the Red Line to Porter Square Station for
+            Commuter Rail connection. There will be no direct connection between Porter
+            Square and North Station. Passengers are to allow approximately thirty (30)
+            minutes of travel time from North Station to Porter Square. Outbound trains
+            will depart at their scheduled times from Porter Square. The following trains
+            will be affected: Train 1400 (6:30 am from Wachusett) Train 1401 (8:35 am from
+            North Station) Train 1402 (8:45 am from Wachusett) Train 1403 (10:45 am from
+            North Station) Train 1404 (10:50 am from Wachusett) Train 1405 (1:10 pm from
+            North Station) Train 1406 (1:15 pm from Wachusett) Train 1407 (3:30 pm from
+            North Station) Train 1408 (3:40 pm from Wachusett) Train 1409 (5:45 pm from
+            North Station) The following stations will be affected: North Station Porter
+            square
+        </description_text>
+        <severity>Severe</severity>
+        <created_dt>1502978359</created_dt>
+        <last_modified_dt>1502978359</last_modified_dt>
+        <service_effect_text>Suspension of service on Fitchburg Line</service_effect_text>
+        <timeframe_text>Saturday</timeframe_text>
+        <alert_lifecycle>Upcoming</alert_lifecycle>
+        <effect_periods>
+            <effect_period effect_start="1503131400" effect_end="1503180000"/>
+        </effect_periods>
+        <affected_services>
+            <services>
+                <service
+                    route_type="2"
+                    mode_name="Commuter Rail"
+                    route_id="CR-Fitchburg"
+                    route_name="Fitchburg Line"
+                    stop_id="North Station"
+                    stop_name="North Station"/>
+                <service
+                    route_type="2"
+                    mode_name="Commuter Rail"
+                    route_id="CR-Fitchburg"
+                    route_name="Fitchburg Line"
+                    stop_id="Porter Square"
+                    stop_name="Porter Square"/>
+            </services>
+            <elevators/>
+        </affected_services>
+    </alert>
+    <alert alert_id="198086">
+        <effect_name>Delay</effect_name>
+        <effect>OTHER_EFFECT</effect>
+        <cause_name>traffic</cause_name>
+        <cause>OTHER_CAUSE</cause>
+        <header_text>Route 77 experiencing minor delays due to traffic</header_text>
+        <short_header_text>Route 77 experiencing minor delays due to traffic</short_header_text>
+        <severity>Minor</severity>
+        <created_dt>1503011149</created_dt>
+        <last_modified_dt>1503011149</last_modified_dt>
+        <service_effect_text>Minor Route 77 delay</service_effect_text>
+        <alert_lifecycle>New</alert_lifecycle>
+        <effect_periods>
+            <effect_period effect_start="1503011142" effect_end="1503026367"/>
+        </effect_periods>
+        <affected_services>
+            <services>
+                <service route_type="3" mode_name="Bus" route_id="77" route_name="77"/>
+            </services>
+            <elevators/>
+        </affected_services>
+    </alert>
+    <alert alert_id="198088">
+        <effect_name>Delay</effect_name>
+        <effect>OTHER_EFFECT</effect>
+        <cause>UNKNOWN_CAUSE</cause>
+        <header_text>
+            Fitchburg Train 427 (7:15 pm from North Station) is expected to operate 5-15
+            min behind schedule between North Station & Wachusett Station.
+        </header_text>
+        <short_header_text>
+            Fitchburg Train 427 (7:15 pm from North Station) is expected to operate 5-15
+            min behind schedule between North Station & Wachusett Station.
+        </short_header_text>
+        <severity>Moderate</severity>
+        <created_dt>1503011967</created_dt>
+        <last_modified_dt>1503011967</last_modified_dt>
+        <service_effect_text>Fitchburg Line delay</service_effect_text>
+        <alert_lifecycle>New</alert_lifecycle>
+        <effect_periods>
+            <effect_period effect_start="1503011948" effect_end="1503021180"/>
+        </effect_periods>
+        <affected_services>
+            <services>
+                <service
+                    route_type="2"
+                    mode_name="Commuter Rail"
+                    route_id="CR-Fitchburg"
+                    route_name="Fitchburg Line"
+                    trip_id="CR-Weekday-Spring-17-427"
+                    trip_name="427 (7:15 pm from North Station)"/>
+            </services>
+            <elevators/>
+        </affected_services>
+    </alert>
+</alerts>
