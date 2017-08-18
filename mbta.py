@@ -1,5 +1,6 @@
 """MBTA arrival predictions for buses at a given stop from the MBTA."""
 import configparser
+import datetime
 import logging
 import logging.handlers
 import math
@@ -8,7 +9,6 @@ import string
 import xml.etree.ElementTree as ET
 
 import requests
-
 
 config = configparser.ConfigParser()
 config.read('mbta.conf')
@@ -197,6 +197,21 @@ class BusStop(object):
             response = requests.get(_url, params=_payload)
             root = ET.fromstring(response.text)
             _schedule = {}
+            _schedule['routes'] = {}
+            for elem in root.iter():
+                if elem.tag == 'schedule':
+                    _schedule['stop_name'] = elem.get('stop_name')
+                    _schedule['stop_id'] = elem.get('stop_id')
+                if elem.tag != 'route':
+                    continue
+                _schedule['routes'][elem.get('route_name')] = []
+                for trip in elem.iter():
+                    if trip.tag != 'trip':
+                        continue
+                    _schedule['routes'][elem.get('route_name')].append(
+                        datetime.datetime.fromtimestamp(
+                            int(trip.get(
+                                'sch_arr_dt'))).strftime('%I:%M:%S %p'))
             return _schedule
         except Exception as e:
             raise
