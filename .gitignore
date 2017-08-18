@@ -1,0 +1,6 @@
+*.conf
+*.ini
+*.log*
+.tags
+.cache
+__pycache__
