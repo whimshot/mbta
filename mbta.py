@@ -1,6 +1,5 @@
 """MBTA arrival predictions for buses at a given stop from the MBTA."""
 import configparser
-import json
 import logging
 import logging.handlers
 import math
@@ -127,8 +126,24 @@ class BusStop(object):
             _url = BASE + '/' + VERSION + '/predictionsbystop'
             response = requests.get(_url, params=_payload)
             root = ET.fromstring(response.text)
-            stop_name = root.attrib.get('stop_name')
             _predictions = {}
+            _predictions['routes'] = {}
+            for elem in root.iter():
+                if elem.tag == 'predictions':
+                    _predictions['stop_name'] = elem.get('stop_name')
+                    _predictions['stop_id'] = elem.get('stop_id')
+                if elem.tag != 'route':
+                    continue
+                _predictions['routes'][elem.get('route_name')] = {}
+                _etas = []
+                for trip in elem.iter():
+                    if trip.tag != 'trip':
+                        continue
+                    _etas.append(math.floor(int(trip.get('pre_away')) / 60))
+                    _trip_headsign = trip.get('trip_headsign')
+                _predictions['routes'][elem.get('route_name')]['etas'] = _etas
+                _predictions['routes'][elem.get(
+                    'route_name')]['trip_headsign'] = _trip_headsign
             return _predictions
         except Exception as e:
             raise
@@ -154,7 +169,6 @@ class BusStop(object):
             _url = BASE + '/' + VERSION + '/routesbystop'
             response = requests.get(_url, params=_payload)
             root = ET.fromstring(response.text)
-            stop_name = root.attrib.get('stop_name')
             _routes = [route.get('route_name')
                        for route in root.findall('.//*[@route_id]')]
             return _routes
