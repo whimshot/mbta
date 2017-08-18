@@ -155,7 +155,8 @@ class BusStop(object):
             response = requests.get(_url, params=_payload)
             root = ET.fromstring(response.text)
             stop_name = root.attrib.get('stop_name')
-            _routes = [route.get('route_name') for route in root.findall('.//*[@route_id]')]
+            _routes = [route.get('route_name')
+                       for route in root.findall('.//*[@route_id]')]
             return _routes
         except Exception as e:
             raise
