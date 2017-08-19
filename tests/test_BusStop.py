@@ -19,7 +19,6 @@ def routelist():
 
 def test_predictions(busstop):
     """Is today a dictionary."""
-    assert isinstance(busstop.predictionsbystop(), dict)
     assert isinstance(busstop.predictions, dict)
     assert 'routes' in busstop.predictions
     assert isinstance(busstop.predictions['routes'], dict)
@@ -29,14 +28,12 @@ def test_predictions(busstop):
 
 def test_routes(busstop, routelist):
     """Is today a dictionary."""
-    assert isinstance(busstop.routesbystop(), list)
     assert isinstance(busstop.routes, list)
     assert any(x in routelist for x in busstop.routes)
 
 
 def test_schedule(busstop):
     """Is today a dictionary."""
-    assert isinstance(busstop.schedulebystop(), dict)
     assert isinstance(busstop.schedule, dict)
     assert 'routes' in busstop.schedule
     assert isinstance(busstop.schedule['routes'], dict)
@@ -46,5 +43,4 @@ def test_schedule(busstop):
 
 def test_alerts(busstop):
     """Is today a dictionary."""
-    assert isinstance(busstop.alertsbystop(), dict)
     assert isinstance(busstop.alerts, dict)

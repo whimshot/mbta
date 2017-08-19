@@ -1,0 +1,39 @@
+#:kivy 1.10.0
+
+<BusLabel>:
+    text_size: self.size
+    halign: 'left'
+    valign: 'middle'
+
+<BoxTitle>:
+    color: [0, 0.5, 1, 1]
+    underline: True
+    size_hint: (1.0, 0.07)
+    halign: 'center'
+
+<BusHeader>:
+    color: [0, 1, 0.5, 1]
+    underline: True
+    size_hint: (0.1, 0.75)
+
+<RouteLabel>:
+    color: [1, 1, 0, 1]
+    underline: True
+    size_hint: (0.25, 1)
+    halign: 'right'
+
+<ETALabel>:
+
+<NoPredictionsLabel>:
+    color: [1, 0, 0, 0.5]
+
+<HeadSignLabel>:
+    size_hint: (0.5, 1)
+
+<BusGrid>:
+    cols: 4
+    spacing: [32, 0]
+
+<BusBox>:
+    orientation: 'vertical'
+    padding: [8]

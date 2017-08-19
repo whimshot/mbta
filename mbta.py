@@ -7,7 +7,7 @@ import math
 import pprint
 import string
 import xml.etree.ElementTree as ET
-
+import time
 import requests
 
 config = configparser.ConfigParser()
@@ -63,55 +63,13 @@ class BusStop(object):
             self.payload = {'api_key': self.api_key,
                             'stop': self.stop,
                             'format': 'xml'}
+            self._predictions_last_updated = time.time()
+            self.predictionsbystop()
+            self.routesbystop()
+            self.schedulebystop()
+            self.alertsbystop()
         except Exception as e:
             raise
-        finally:
-            pass
-
-    def get_predictions(self):
-        """Get predicted arrival times from MBTA."""
-        try:
-            ROUTE_MAX = config.getint('Default', 'route_max')
-            self.letters = list(string.ascii_lowercase)[:ROUTE_MAX:]
-            response = requests.get(self.url, params=self.payload)
-            self.logger.info('response for stop %s %s',
-                             self.stop, response)
-            root = ET.fromstring(response.text)
-            self.logger.info('got stop data %s', root.attrib)
-            stop_name = root.attrib.get('stop_name')
-            routes = root.find('.//*[@route_type="3"]')
-            self.predictions = {}
-            for route in routes:
-                self.logger.info('got route data %s', route.attrib)
-                directions = route.findall('.//*[@direction_name]')
-                direction_name = directions[0].attrib.get('direction_name')
-                route_id = route.attrib.get('route_id')
-                trips = route.findall('.//*[@trip_id]')
-                eta_string = '{0}' + chr(160) + 'min'
-                etas = ', '.join([eta_string.format(eta) for eta
-                                  in [math.floor(int(raw_eta) / 60)
-                                      for raw_eta in
-                                      [trip.attrib.get('pre_away')
-                                       for trip in trips]]])
-                trip_headsign = [trip.attrib.get('trip_headsign') for trip
-                                 in trips][0]
-                letter = self.letters.pop(0)
-                self.predictions[letter] = {}
-                self.predictions[letter]['route_id'] = route_id
-                self.predictions[letter]['direction_name'] = direction_name
-                self.predictions[letter]['etas'] = etas
-                self.predictions[letter]['trip_headsign'] = trip_headsign
-                self.predictions[letter]['stop_name'] = stop_name
-        except Exception as e:
-            self.predictions = {}
-            for letter in self.letters:
-                self.predictions[letter] = {}
-                self.predictions[letter]['route_id'] = ''
-                self.predictions[letter]['direction_name'] = ''
-                self.predictions[letter]['etas'] = ''
-                self.predictions[letter]['trip_headsign'] = ''
-                self.predictions[letter]['stop_name'] = ''
-            self.logger.warning('Failed to get predictions. {0}'.format(e))
         finally:
             pass
 
@@ -126,25 +84,31 @@ class BusStop(object):
             _url = BASE + '/' + VERSION + '/predictionsbystop'
             response = requests.get(_url, params=_payload)
             root = ET.fromstring(response.text)
-            _predictions = {}
-            _predictions['routes'] = {}
+            self._predictions = {}
+            self._predictions['routes'] = {}
             for elem in root.iter():
                 if elem.tag == 'predictions':
-                    _predictions['stop_name'] = elem.get('stop_name')
-                    _predictions['stop_id'] = elem.get('stop_id')
+                    self._predictions['stop_name'] = elem.get('stop_name')
+                    self._predictions['stop_id'] = elem.get('stop_id')
                 if elem.tag != 'route':
                     continue
-                _predictions['routes'][elem.get('route_name')] = {}
+                self._predictions['routes'][elem.get('route_name')] = {}
                 _etas = []
                 for trip in elem.iter():
                     if trip.tag != 'trip':
                         continue
-                    _etas.append(math.floor(int(trip.get('pre_away')) / 60))
+                    _etas.append(
+                        str(math.floor(int(trip.get('pre_away'))
+                                       / 60)) + chr(160) + 'min.')
                     _trip_headsign = trip.get('trip_headsign')
-                _predictions['routes'][elem.get('route_name')]['etas'] = _etas
-                _predictions['routes'][elem.get(
+                self._predictions['routes'][elem.get(
+                    'route_name')]['etas'] = _etas
+                self._predictions['routes'][elem.get(
                     'route_name')]['trip_headsign'] = _trip_headsign
-            return _predictions
+                self.logger.info('Predictions <%s> %s %s [%s]',
+                                 self._predictions['stop_name'],
+                                 elem.get('route_name'),
+                                 _etas, _trip_headsign)
         except Exception as e:
             raise
         finally:
@@ -156,7 +120,11 @@ class BusStop(object):
 
     @predictions.getter
     def predictions(self):
-        return self.predictionsbystop()
+        _now = time.time()
+        if (_now - self._predictions_last_updated) > 59:
+            self.predictionsbystop()
+            self._predictions_last_updated = _now
+        return self._predictions
 
     def routesbystop(self):
         "Docstring goes here."
@@ -169,9 +137,8 @@ class BusStop(object):
             _url = BASE + '/' + VERSION + '/routesbystop'
             response = requests.get(_url, params=_payload)
             root = ET.fromstring(response.text)
-            _routes = [route.get('route_name')
-                       for route in root.findall('.//*[@route_id]')]
-            return _routes
+            self._routes = [route.get('route_name')
+                            for route in root.findall('.//*[@route_id]')]
         except Exception as e:
             raise
         finally:
@@ -183,7 +150,7 @@ class BusStop(object):
 
     @routes.getter
     def routes(self):
-        return self.routesbystop()
+        return self._routes
 
     def schedulebystop(self):
         "Docstring goes here."
@@ -196,23 +163,22 @@ class BusStop(object):
             _url = BASE + '/' + VERSION + '/schedulebystop'
             response = requests.get(_url, params=_payload)
             root = ET.fromstring(response.text)
-            _schedule = {}
-            _schedule['routes'] = {}
+            self._schedule = {}
+            self._schedule['routes'] = {}
             for elem in root.iter():
                 if elem.tag == 'schedule':
-                    _schedule['stop_name'] = elem.get('stop_name')
-                    _schedule['stop_id'] = elem.get('stop_id')
+                    self._schedule['stop_name'] = elem.get('stop_name')
+                    self._schedule['stop_id'] = elem.get('stop_id')
                 if elem.tag != 'route':
                     continue
-                _schedule['routes'][elem.get('route_name')] = []
+                self._schedule['routes'][elem.get('route_name')] = []
                 for trip in elem.iter():
                     if trip.tag != 'trip':
                         continue
-                    _schedule['routes'][elem.get('route_name')].append(
+                    self._schedule['routes'][elem.get('route_name')].append(
                         datetime.datetime.fromtimestamp(
                             int(trip.get(
                                 'sch_arr_dt'))).strftime('%I:%M:%S %p'))
-            return _schedule
         except Exception as e:
             raise
         finally:
@@ -224,7 +190,7 @@ class BusStop(object):
 
     @schedule.getter
     def schedule(self):
-        return self.schedulebystop()
+        return self._schedule
 
     def alertsbystop(self):
         "Docstring goes here."
@@ -237,8 +203,7 @@ class BusStop(object):
             _url = BASE + '/' + VERSION + '/alertsbystop'
             response = requests.get(_url, params=_payload)
             root = ET.fromstring(response.text)
-            _alerts = {}
-            return _alerts
+            self._alerts = {}
         except Exception as e:
             raise
         finally:
@@ -250,7 +215,7 @@ class BusStop(object):
 
     @alerts.getter
     def alerts(self):
-        return self.alertsbystop()
+        return self._alerts
 
 
 if __name__ == '__main__':
@@ -262,3 +227,6 @@ if __name__ == '__main__':
     pp.pprint(foo.alerts)
     bar = BusStop('599')
     pp.pprint(bar.predictions)
+    pp.pprint(bar.routes)
+    pp.pprint(bar.schedule)
+    pp.pprint(bar.alerts)
