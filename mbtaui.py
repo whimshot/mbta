@@ -16,6 +16,7 @@ kivy.config.Config.set('graphics', 'height', 480)
 kivy.core.window.Window.size = (800, 480)
 
 
+# class BusLabel(kivy.uix.button.Button):
 class BusLabel(kivy.uix.label.Label):
     """docstring for BusLabel."""
 
@@ -24,7 +25,7 @@ class BusLabel(kivy.uix.label.Label):
         pass
 
 
-class BoxTitle(BusLabel):
+class MBTABoxTitle(BusLabel):
     """docstring for BoxTitle."""
 
     def __init__(self, **kwargs):
@@ -101,9 +102,10 @@ class BusGrid(kivy.uix.gridlayout.GridLayout):
                         self._inbound.predictions['routes'][_rt]['etas'])
                     _stop_a_eta = ETALabel(text=_inbound_etas)
                 except LookupError:
-                    _inbound_etas = 'No Predictions'
+                    _inbound_etas = '[sub]No Predictions[/sub]'
                     _stop_a_eta = ETALabel(
-                        text=_inbound_etas, color=[1, 0, 0, 0.75])
+                        text=_inbound_etas, color=[1, 0, 0, 0.75],
+                        markup=True)
                 finally:
                     self.add_widget(_stop_a_eta)
                     _row.append(_stop_a_eta)
@@ -113,9 +115,10 @@ class BusGrid(kivy.uix.gridlayout.GridLayout):
                         self._outbound.predictions['routes'][_rt]['etas'])
                     _stop_b_eta = ETALabel(text=_outbound_etas)
                 except LookupError:
-                    _outbound_etas = 'No Predictions'
+                    _outbound_etas = '[sub]No Predictions[/sub]'
                     _stop_b_eta = ETALabel(
-                        text=_outbound_etas, color=[1, 0, 0, 0.75])
+                        text=_outbound_etas, color=[1, 0, 0, 0.75],
+                        markup=True)
                 finally:
                     self.add_widget(_stop_b_eta)
                     _row.append(_stop_b_eta)
@@ -144,18 +147,20 @@ class BusGrid(kivy.uix.gridlayout.GridLayout):
                 self._grid[_rt][1].text = _inbound_etas
                 self._grid[_rt][1].color = [1, 1, 1, 1]
             except LookupError:
-                _inbound_etas = 'No Predictions'
+                _inbound_etas = '[sub]No Predictions[/sub]'
                 self._grid[_rt][1].text = _inbound_etas
                 self._grid[_rt][1].color = [1, 0, 0, 0.75]
+                self._grid[_rt][1].markup = True
             try:
                 _outbound_etas = ', '.join(
                     self._outbound.predictions['routes'][_rt]['etas'])
                 self._grid[_rt][2].text = _outbound_etas
                 self._grid[_rt][2].color = [1, 1, 1, 1]
             except LookupError:
-                _outbound_etas = 'No Predictions'
+                _outbound_etas = '[sub]No Predictions[/sub]'
                 self._grid[_rt][2].text = _outbound_etas
                 self._grid[_rt][2].color = [1, 0, 0, 0.75]
+                self._grid[_rt][2].markup = True
             try:
                 _headsign = self._outbound.predictions[
                     'routes'][_rt]['trip_headsign']
@@ -172,7 +177,7 @@ class BusBox(kivy.uix.boxlayout.BoxLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bt = BoxTitle(text='Bus ETAs')
+        self.bt = MBTABoxTitle(text='[b]Bus ETAs[/b]', markup=True)
         self.add_widget(self.bt)
         self.bg = BusGrid()
         self.add_widget(self.bg)
