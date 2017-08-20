@@ -9,36 +9,72 @@ import string
 import xml.etree.ElementTree as ET
 import time
 import requests
+import sys
+import inspect
 
 config = configparser.ConfigParser()
-config.read('mbta.conf')
 
-MAXLOGSIZE = config.getint('Logging', 'maxlogsize')
-ROTATIONCOUNT = config.getint('Logging', 'rotationcount')
-LOGGERNAME = config.get('Logging', 'loggername')
+try:
+    assert __name__ == '__main__'
+    config.read('mbta.conf')
+except AssertionError:
+    logger = logging.getLogger(__name__)
+    config.read('mbta.conf')
+    # MAXLOGSIZE = config.getint('Logging', 'maxlogsize')
+    # ROTATIONCOUNT = config.getint('Logging', 'rotationcount')
+    # LOGGERNAME = config.get('Logging', 'loggername')
+    #
+    # # create logger
+    # logger = logging.getLogger(LOGGERNAME)
+    # # logger.setLevel(logging.INFO)
+    # logger.setLevel(logging.DEBUG)
+    # # create file handler which logs even debug messages
+    # logger_fh = logging.handlers.RotatingFileHandler(LOGGERNAME + '.log',
+    #                                                  maxBytes=MAXLOGSIZE,
+    #                                                  backupCount=ROTATIONCOUNT)
+    # logger_fh.setLevel(logging.DEBUG)
+    # # create console handler with a higher log level
+    # logger_ch = logging.StreamHandler()
+    # logger_ch.setLevel(logging.ERROR)
+    # # create formatter and add it to the handlers
+    # logger_formatter = logging.Formatter('%(asctime)s'
+    #                                      + ' %(levelname)s'
+    #                                      + ' %(name)s[%(process)d]'
+    #                                      + ' %(message)s')
+    # logger_fh.setFormatter(logger_formatter)
+    # logger_ch.setFormatter(logger_formatter)
+    # # add the handlers to the logger
+    # logger.addHandler(logger_fh)
+    # logger.addHandler(logger_ch)
+else:
+    MAXLOGSIZE = config.getint('Logging', 'maxlogsize')
+    ROTATIONCOUNT = config.getint('Logging', 'rotationcount')
+    LOGFILE = config.get('Logging', 'logfile')
 
-# create logger
-logger = logging.getLogger(LOGGERNAME)
-# logger.setLevel(logging.INFO)
-logger.setLevel(logging.INFO)
-# create file handler which logs even debug messages
-logger_fh = logging.handlers.RotatingFileHandler(LOGGERNAME + '.log',
-                                                 maxBytes=MAXLOGSIZE,
-                                                 backupCount=ROTATIONCOUNT)
-logger_fh.setLevel(logging.DEBUG)
-# create console handler with a higher log level
-logger_ch = logging.StreamHandler()
-logger_ch.setLevel(logging.ERROR)
-# create formatter and add it to the handlers
-logger_formatter = logging.Formatter('%(asctime)s'
-                                     + ' %(levelname)s'
-                                     + ' %(name)s[%(process)d]'
-                                     + ' %(message)s')
-logger_fh.setFormatter(logger_formatter)
-logger_ch.setFormatter(logger_formatter)
-# add the handlers to the logger
-logger.addHandler(logger_fh)
-logger.addHandler(logger_ch)
+    # create logger
+    logger = logging.getLogger(__name__)
+    # logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    logger_fh = logging.handlers.RotatingFileHandler(LOGFILE,
+                                                     maxBytes=MAXLOGSIZE,
+                                                     backupCount=ROTATIONCOUNT)
+    logger_fh.setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    logger_ch = logging.StreamHandler()
+    logger_ch.setLevel(logging.ERROR)
+    # create formatter and add it to the handlers
+    logger_formatter = logging.Formatter('%(asctime)s'
+                                         + ' %(levelname)s'
+                                         + ' %(name)s[%(process)d]'
+                                         + ' %(message)s')
+    logger_fh.setFormatter(logger_formatter)
+    logger_ch.setFormatter(logger_formatter)
+    # add the handlers to the logger
+    logger.addHandler(logger_fh)
+    logger.addHandler(logger_ch)
+finally:
+    pass
 
 
 class BusStop(object):
@@ -48,14 +84,14 @@ class BusStop(object):
         """Create Stop object."""
         super().__init__(**kwargs)
         try:
-            self.logger = \
-                logging.getLogger(LOGGERNAME + '.' + __name__ + '.'
-                                  + self.__class__.__name__)
+            # self.logger = \
+            #     logging.getLogger(__name__ + '.' + __name__ + '.'
+            #                       + self.__class__.__name__)
             self.api_key = config.get('MBTA', 'apikey')
 
             self.stop = stop
-            self.logger.info('Instantiating %s %s',
-                             self.__class__.__name__, self.stop)
+            logger.info('Instantiating %s %s',
+                        self.__class__.__name__, self.stop)
             self.base = 'http://realtime.mbta.com/developer/api'
             self.version = 'v2'
             self.endpoint = 'predictionsbystop'
@@ -105,10 +141,10 @@ class BusStop(object):
                     'route_name')]['etas'] = _etas
                 self._predictions['routes'][elem.get(
                     'route_name')]['trip_headsign'] = _trip_headsign
-                self.logger.info('Predictions <%s> %s %s [%s]',
-                                 self._predictions['stop_name'],
-                                 elem.get('route_name'),
-                                 _etas, _trip_headsign)
+                logger.info('Predictions <%s> %s %s [%s]',
+                            self._predictions['stop_name'],
+                            elem.get('route_name'),
+                            _etas, _trip_headsign)
         except Exception as e:
             raise
         finally:
