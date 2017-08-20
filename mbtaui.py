@@ -1,4 +1,8 @@
 """Docstring goes here."""
+import configparser
+import logging
+import logging.handlers
+
 import kivy.app
 import kivy.clock
 import kivy.core.window
@@ -8,12 +12,49 @@ import kivy.uix.gridlayout
 import kivy.uix.image
 import kivy.uix.label
 
-import mbta
 
 kivy.config.Config.set('graphics', 'resizable', 0)
 kivy.config.Config.set('graphics', 'width', 800)
 kivy.config.Config.set('graphics', 'height', 480)
 kivy.core.window.Window.size = (800, 480)
+config = configparser.ConfigParser()
+
+try:
+    assert __name__ == '__main__'
+    config.read('mbta.conf')
+except AssertionError:
+    print('mbtaui assertion error')
+    logger = logging.getLogger(__name__)
+    config.read('mbta.conf')
+else:
+    MAXLOGSIZE = config.getint('Logging', 'maxlogsize')
+    ROTATIONCOUNT = config.getint('Logging', 'rotationcount')
+    LOGFILE = config.get('Logging', 'logfile')
+
+    # create logger
+    logger = logging.getLogger(__name__)
+    # logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    logger_fh = logging.handlers.RotatingFileHandler(LOGFILE,
+                                                     maxBytes=MAXLOGSIZE,
+                                                     backupCount=ROTATIONCOUNT)
+    logger_fh.setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    logger_ch = logging.StreamHandler()
+    logger_ch.setLevel(logging.ERROR)
+    # create formatter and add it to the handlers
+    logger_formatter = logging.Formatter('%(asctime)s'
+                                         + ' %(levelname)s'
+                                         + ' %(name)s[%(process)d]'
+                                         + ' %(message)s')
+    logger_fh.setFormatter(logger_formatter)
+    logger_ch.setFormatter(logger_formatter)
+    # add the handlers to the logger
+    logger.addHandler(logger_fh)
+    logger.addHandler(logger_ch)
+finally:
+    import mbta
 
 
 # class BusLabel(kivy.uix.button.Button):
@@ -135,8 +176,8 @@ class BusGrid(kivy.uix.gridlayout.GridLayout):
                     _row.append(_headsign_widget)
 
                 self._grid[_rt] = _row
-                mbta.logger.info('seting up %s with (%s) (%s) [%s]',
-                                 _rt, _inbound_etas, _outbound_etas, _headsign)
+                logger.info('seting up %s with (%s) (%s) [%s]',
+                            _rt, _inbound_etas, _outbound_etas, _headsign)
             kivy.clock.Clock.schedule_interval(self.update, 60)
 
     def update(self, dt):
@@ -168,8 +209,8 @@ class BusGrid(kivy.uix.gridlayout.GridLayout):
             except LookupError:
                 _headsign = ''
                 self._grid[_rt][3].text = _headsign
-            mbta.logger.info('updating %s with (%s) (%s) [%s]',
-                             _rt, _inbound_etas, _outbound_etas, _headsign)
+            logger.info('updating %s with (%s) (%s) [%s]',
+                        _rt, _inbound_etas, _outbound_etas, _headsign)
 
 
 class BusBox(kivy.uix.boxlayout.BoxLayout):
